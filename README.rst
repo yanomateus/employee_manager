@@ -29,6 +29,14 @@ getting started
 
     user@machine~/employee_manager/website$ python manager.py runserver
     
+
+tests
+-----
+
+The REST API endpoints are covered by unittests. To run tests, simply do::
+
+    user@machine~/employee_manager/website$ python manager.py test employee_api
+    
     
 documentation
 -------------

@@ -30,7 +30,7 @@ def list_employees(request):
     -------
     Supposing the app is running on localhost:8000, a GET request as::
 
-        curl -X GET -H "application/json"  https://localhost:8000/employee/
+        curl -X GET -H "application/json" http://localhost:8000/employee/
 
     should return a json response like::
 
@@ -59,8 +59,8 @@ def delete_employee(request, employee_email):
     -------
     Supposing the app is running on localhost:8000, a DELETE request as::
 
-        curl -X DELETE -H "application/json" https://localhost:8000/employee \
-          /foo@bar.com/delete/
+        curl -X DELETE -H "application/json"
+            http://localhost:8000/employee/foo@bar.com/delete/
 
     should return a json response like::
 
@@ -90,9 +90,9 @@ def update_employee(request, employee_email):
     -------
     Supposing the app is running on localhost:8000, a PUT request as::
 
-        curl -X PUT -H "Content-Type: application/json" \
-          -d '{"name":"new_name", "email": "new@mail.com", \
-          "department": "new_department"}' \
+        curl -X PUT -H "Content-Type: application/json"
+          -d '{"name":"new_name", "email": "new@mail.com",
+          "department": "new_department"}'
           http://localhost:8000/employee/b@b.com/update/
 
     should return a json response like::
@@ -139,9 +139,9 @@ def create_employee(request):
     -------
     Supposing the app is running on localhost:8000, a request as::
 
-        curl -X POST -H "Content-Type: application/json" \
-            -d '{"name": "emp_name", "department": "dep_name", \
-            "email": "emp_name@mail.com"}' \
+        curl -X POST -H "Content-Type: application/json"
+            -d '{"name": "emp_name", "department": "dep_name",
+            "email": "emp_name@mail.com"}'
             http://localhost:8000/employee/create/
 
     should return a json response like::

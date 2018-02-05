@@ -26,16 +26,20 @@ def list_employees(request):
 
     Example
     -------
-    Supposing the app is running on localhost:8000, a GET request as
-        $ curl -X GET -H "application/json"  https://localhost:8000/employee/
-    should return a json response like
-        $ [
-        $   {
-        $     "name": "emp",
-        $     "email": "emp@department.com",
-        $     "department": "department_name"
-        $   }
-        $ ]
+    Supposing the app is running on localhost:8000, a GET request as::
+
+        curl -X GET -H "application/json"  https://localhost:8000/employee/
+
+    should return a json response like::
+
+        [
+          {
+            "name": "emp",
+            "email": "emp@department.com",
+            "department": "department_name"
+          }
+        ]
+
     """
     employees_list = [model_to_dict(emp, exclude=['id'])
                       for emp in Employee.objects.all()]
@@ -51,14 +55,20 @@ def delete_employee(request, employee_email):
 
     Example
     -------
-    Supposing the app is running on localhost:8000, a DELETE request as
-        $ curl -X DELETE -H "application/json" https://localhost:8000/employee \
-        $   /foo@bar.com/delete/
-    should return a json response like
-        $ {'msg': 'deleted'}
+    Supposing the app is running on localhost:8000, a DELETE request as::
+
+        curl -X DELETE -H "application/json" https://localhost:8000/employee \
+          /foo@bar.com/delete/
+
+    should return a json response like::
+
+        {'msg': 'deleted'}
+
     in case the user with email address "foo@bar.com" exists. Otherwise it will
-    a json response like
-        $ {'error': 'employee not found'}
+    a json response like::
+
+        {'error': 'employee not found'}
+
     """
     try:
         employee = Employee.objects.get(email=employee_email)
@@ -76,19 +86,26 @@ def update_employee(request, employee_email):
 
     Example
     -------
-    Supposing the app is running on localhost:8000, a PUT request as
-        $ curl -X PUT -H "Content-Type: application/json" \
-        $   -d '{"name":"new_name", "email": "new@mail.com", \
-        $   "department": "new_department"}' \
-        $   http://localhost:8000/employee/b@b.com/update/
-    should return a json response like
-        $   {'msg': 'updated'}
+    Supposing the app is running on localhost:8000, a PUT request as::
+
+        curl -X PUT -H "Content-Type: application/json" \
+          -d '{"name":"new_name", "email": "new@mail.com", \
+          "department": "new_department"}' \
+          http://localhost:8000/employee/b@b.com/update/
+
+    should return a json response like::
+
+        {'msg': 'updated'}
+
     if the employee exists and was succefully updated. If the employee doesn't
-    exist it will return a json response like
-        $ {'error': 'employee not found'}
+    exist it will return a json response like::
+
+        {'error': 'employee not found'}
+
     If the request payload contains an email which is not available, then this
-    endpoint will return a json response like
-        $ {'error': 'email addess not available'}
+    endpoint will return a json response like::
+
+        {'error': 'email addess not available'}
     """
     try:
         employee = Employee.objects.get(email=employee_email)

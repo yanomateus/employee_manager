@@ -8,7 +8,6 @@ requirements
 ------------
 * python 2.7.9
 * pip 9.0.1
-* django 1.11.10
 
 getting started
 ---------------
@@ -29,3 +28,15 @@ getting started
 * Start the development server, which you can then access on ``http://localhost:8000``::
 
     user@machine~/employee_manager/website$ python manager.py runserver
+    
+    
+documentation
+-------------
+
+Check the hosted documentation for the API's endpoints `here <https://linux.ime.usp.br/~mateusak/docs/>`_.
+
+The documentation is generated with `Sphinx <http://www.sphinx-doc.org/en/stable/>`_.
+
+You can update the documentation by running::
+
+    user@machine~/employee_manager/_docs$ sphinx -b html . output_folder

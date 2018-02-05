@@ -3,6 +3,7 @@ from django.conf.urls import url
 from .views import list_employees
 from .views import update_employee
 from .views import delete_employee
+from .views import create_employee
 
 
 _UPDATE_USER_REGEXP_STR = \
@@ -14,5 +15,6 @@ _DELETE_USER_REGEXP_STR = \
 urlpatterns = [
     url(r'^$', list_employees),
     url(_UPDATE_USER_REGEXP_STR, update_employee),
-    url(_DELETE_USER_REGEXP_STR, delete_employee)
+    url(_DELETE_USER_REGEXP_STR, delete_employee),
+    url(r'^create/$', create_employee)
 ]

@@ -126,3 +126,9 @@ def update_employee(request, employee_email):
         return JsonResponse(EMPLOYEE_EMAIL_NOT_AVAILABLE_JSON)
     else:
         return JsonResponse(EMPLOYEE_UPDATE_SUCEESS_JSON)
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def create_employee(request):
+    return JsonResponse({'foo': 'bar'})

@@ -108,6 +108,7 @@ def update_employee(request, employee_email):
     endpoint will return a json response like::
 
         {'error': 'email addess not available'}
+
     """
     try:
         employee = Employee.objects.get(email=employee_email)

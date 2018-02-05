@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import json
+
 from django.http import JsonResponse
-from django.http import HttpResponse  # TODO:REMOVE ME
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
-
+from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Employee
@@ -13,6 +15,8 @@ from .models import Employee
 
 EMPLOYEE_NOT_FOUND_JSON = {'error': 'employee not found'}
 EMPLOYEE_DELETE_SUCCESS_JSON = {'msg': 'deleted'}
+EMPLOYEE_UPDATE_SUCEESS_JSON = {'msg': 'updated'}
+EMPLOYEE_EMAIL_NOT_AVAILABLE_JSON = {'error': 'email addess not available'}
 
 
 @csrf_exempt
@@ -27,9 +31,9 @@ def list_employees(request):
     should return a json response like
         $ [
         $   {
-        $     "name": "Ivisívis",
-        $     "email": "ivis@sivis.com",
-        $     "department": "Transparency"
+        $     "name": "emp",
+        $     "email": "emp@department.com",
+        $     "department": "department_name"
         $   }
         $ ]
     """
@@ -52,7 +56,7 @@ def delete_employee(request, employee_email):
         $   /foo@bar.com/delete/
     should return a json response like
         $ {'msg': 'deleted'}
-    in case the user with email addres "foo@bar.com" exists. Otherwise it will
+    in case the user with email address "foo@bar.com" exists. Otherwise it will
     a json response like
         $ {'error': 'employee not found'}
     """
@@ -65,5 +69,43 @@ def delete_employee(request, employee_email):
         return JsonResponse(EMPLOYEE_DELETE_SUCCESS_JSON)
 
 
+@csrf_exempt
+@require_http_methods(['PUT'])
 def update_employee(request, employee_email):
-    return HttpResponse('Update employee %s' % employee_email)
+    """Implement REST endpoint to update an employee's data.
+
+    Example
+    -------
+    Supposing the app is running on localhost:8000, a PUT request as
+        $ curl -X PUT -H "Content-Type: application/json" \
+        $   -d '{"name":"new_name", "email": "new@mail.com", \
+        $   "department": "new_department"}' \
+        $   http://localhost:8000/employee/b@b.com/update/
+    should return a json response like
+        $   {'msg': 'updated'}
+    if the employee exists and was succefully updated. If the employee doesn't
+    exist it will return a json response like
+        $ {'error': 'employee not found'}
+    If the request payload contains an email which is not available, then this
+    endpoint will return a json response like
+        $ {'error': 'email addess not available'}
+    """
+    try:
+        employee = Employee.objects.get(email=employee_email)
+    except ObjectDoesNotExist:
+        return JsonResponse(EMPLOYEE_NOT_FOUND_JSON)
+
+    update_data = json.loads(request.body)
+    if 'name' in update_data:
+        employee.name = update_data['name']
+    if 'department' in update_data:
+        employee.department = update_data['department']
+    if 'email' in update_data:
+        employee.email = update_data['email']
+
+    try:
+        employee.save()
+    except IntegrityError:
+        return JsonResponse(EMPLOYEE_EMAIL_NOT_AVAILABLE_JSON)
+    else:
+        return JsonResponse(EMPLOYEE_UPDATE_SUCEESS_JSON)
